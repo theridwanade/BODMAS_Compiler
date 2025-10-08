@@ -14,6 +14,9 @@ def lex(expression: str):
     expression_length = len(expression)
     tokens: list[Token] = []
 
+    if expression_length == 0:
+        raise ValueError("Empty expression")
+
 
     def walk():
         count = 0
