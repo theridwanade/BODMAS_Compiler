@@ -7,7 +7,7 @@ class Token:
         self.value = value
 
     def __repr__(self):
-        return f"Token(type='{self.type}', value={self.value})"
+        return f"{{type: {self.type}, value: '{self.value}'}}"
 
 def lex(expression: str):
     expression.strip()
