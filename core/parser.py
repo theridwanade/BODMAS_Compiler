@@ -37,6 +37,9 @@ def parse(node, tokens: list[Token]):
             new_node.left = ASTNode("NumberLiteral", "-1")
             new_node.right = factor_unary_node
             return new_node
+        elif token.type == 'UNARY_PLUS':
+            consume('UNARY_PLUS')
+            return parse_factor()
         elif token.type == 'LPAREN':
             consume('LPAREN')
             factor_node = parse_expression()

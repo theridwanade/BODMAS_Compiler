@@ -30,7 +30,14 @@ def lex(expression: str):
             i += 1
             prev_token_type = tokens[-1].type
             continue
-
+        if char == '+':
+            if prev_token_type in ('NUMBER', 'RPAREN'):
+                tokens.append(Token("PLUS", '+'))
+            else:
+                tokens.append(Token("UNARY_PLUS", '+'))
+            i += 1
+            prev_token_type = tokens[-1].type
+            continue
         if char.isdigit():
             num = ''
             while i < length and expression[i].isdigit():
@@ -38,12 +45,6 @@ def lex(expression: str):
                 i += 1
             tokens.append(Token("NUMBER", num))
             prev_token_type = "NUMBER"
-            continue
-
-        if char == '+':
-            tokens.append(Token("PLUS", '+'))
-            i += 1
-            prev_token_type = "PLUS"
             continue
         if char == '*':
             tokens.append(Token("MULTIPLY", '*'))
