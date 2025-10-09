@@ -34,9 +34,9 @@ def lex(expression: str):
                 if count == 0 and expression[count + 1].isdigit():
                     count += 1
                     continue
-                elif count == 0 or expression[count - 1] in '+-*/(':
+                elif count == 0 and expression[count + 1] == '-' and expression[count + 2].isdigit():
                     tokens.append(Token("UNARY_MINUS", '-'))
-                    count += 1
+                    count += 2
                 else:
                     tokens.append(Token("MINUS", '-'))
                     count += 1
