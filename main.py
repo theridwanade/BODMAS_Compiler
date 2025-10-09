@@ -1,6 +1,6 @@
 from core import evaluator, parser, lexer
 
-bodmas_expression = "--2 + 3"
+bodmas_expression = "2-+2"
 token = lexer.lex(bodmas_expression)
 print(f"Tokens {token}")
 ast = parser.parse(None, token)

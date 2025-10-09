@@ -1,3 +1,5 @@
+# core/lexer.py
+
 class Token:
     def __init__(self, type, value):
         self.type = type
@@ -7,60 +9,66 @@ class Token:
         return f"{{type: {self.type}, value: '{self.value}'}}"
 
 def lex(expression: str):
-    expression.strip()
-    expression_length = len(expression)
+    expression = expression.strip()
     tokens: list[Token] = []
+    i = 0
+    length = len(expression)
+    prev_token_type = None
 
-    if expression_length == 0:
-        raise ValueError("Empty expression")
+    while i < length:
+        char = expression[i]
+        if char.isspace():
+            i += 1
+            continue
 
-
-    def walk():
-        count = 0
-        while True:
-            if expression[count].isdigit():
-                num = ''
-                while count < expression_length and expression[count].isdigit():
-                    if expression[count - 1] == '-':
-                        num += '-'
-                    num += expression[count]
-                    count += 1
-                token = Token("NUMBER", num)
-                tokens.append(token)
-            elif expression[count] == '+':
-                tokens.append(Token("PLUS", '+'))
-                count += 1
-            elif expression[count] == '-':
-                if count == 0 and expression[count + 1].isdigit():
-                    count += 1
-                    continue
-                elif count == 0 and expression[count + 1] == '-' and expression[count + 2].isdigit():
-                    tokens.append(Token("UNARY_MINUS", '-'))
-                    count += 2
-                else:
-                    tokens.append(Token("MINUS", '-'))
-                    count += 1
-            elif expression[count] == '*':
-                tokens.append(Token("MULTIPLY", '*'))
-                count += 1
-            elif expression[count] == '/':
-                tokens.append(Token("DIVIDE", '/'))
-                count += 1
-            elif expression[count] == '÷':
-                tokens.append(Token("DIVIDE", '÷'))
-                count += 1
-            elif expression[count] == '(':
-                tokens.append(Token("LPAREN", '('))
-                count += 1
-            elif expression[count] == ')':
-                tokens.append(Token("RPAREN", ')'))
-                count += 1
-            elif expression[count].isspace():
-                count += 1
+        if char == '-':
+            # Decide unary or binary minus
+            if prev_token_type in ('NUMBER', 'RPAREN'):
+                tokens.append(Token("MINUS", '-'))
             else:
-                raise ValueError(f"Unexpected character: {expression[count]}")
-            if count >= expression_length:
-                break
-    walk()
-    return  tokens
+                tokens.append(Token("UNARY_MINUS", '-'))
+            i += 1
+            prev_token_type = tokens[-1].type
+            continue
 
+        if char.isdigit():
+            num = ''
+            while i < length and expression[i].isdigit():
+                num += expression[i]
+                i += 1
+            tokens.append(Token("NUMBER", num))
+            prev_token_type = "NUMBER"
+            continue
+
+        if char == '+':
+            tokens.append(Token("PLUS", '+'))
+            i += 1
+            prev_token_type = "PLUS"
+            continue
+        if char == '*':
+            tokens.append(Token("MULTIPLY", '*'))
+            i += 1
+            prev_token_type = "MULTIPLY"
+            continue
+        if char == '/':
+            tokens.append(Token("DIVIDE", '/'))
+            i += 1
+            prev_token_type = "DIVIDE"
+            continue
+        if char == '÷':
+            tokens.append(Token("DIVIDE", '÷'))
+            i += 1
+            prev_token_type = "DIVIDE"
+            continue
+        if char == '(':
+            tokens.append(Token("LPAREN", '('))
+            i += 1
+            prev_token_type = "LPAREN"
+            continue
+        if char == ')':
+            tokens.append(Token("RPAREN", ')'))
+            i += 1
+            prev_token_type = "RPAREN"
+            continue
+        raise ValueError(f"Unexpected character: {char}")
+    return tokens
