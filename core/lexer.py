@@ -1,6 +1,3 @@
-from lib2to3.pgen2.token import NUMBER
-
-
 class Token:
     def __init__(self, type, value):
         self.type = type
@@ -24,7 +21,7 @@ def lex(expression: str):
             if expression[count].isdigit():
                 num = ''
                 while count < expression_length and expression[count].isdigit():
-                    if expression[count - 1] == '-' and (count - 1 == 0 or expression[count - 2] in '+-*/( '):
+                    if expression[count - 1] == '-':
                         num += '-'
                     num += expression[count]
                     count += 1
@@ -34,11 +31,15 @@ def lex(expression: str):
                 tokens.append(Token("PLUS", '+'))
                 count += 1
             elif expression[count] == '-':
-                if (count == 0 and expression[count] == '-') or expression[count - 1] in '(':
+                if count == 0 and expression[count + 1].isdigit():
                     count += 1
                     continue
-                tokens.append(Token("MINUS", '-'))
-                count += 1
+                elif count == 0 or expression[count - 1] in '+-*/(':
+                    tokens.append(Token("UNARY_MINUS", '-'))
+                    count += 1
+                else:
+                    tokens.append(Token("MINUS", '-'))
+                    count += 1
             elif expression[count] == '*':
                 tokens.append(Token("MULTIPLY", '*'))
                 count += 1

@@ -1,4 +1,5 @@
-from parser import ASTNode
+from core.parser import ASTNode
+
 
 def evaluate(node: ASTNode):
     if node.node_type == 'NumberLiteral':

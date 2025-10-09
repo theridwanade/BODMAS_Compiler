@@ -1,4 +1,4 @@
-from lexer import Token
+from core.lexer import Token
 
 
 class ASTNode:
@@ -30,13 +30,20 @@ def parse(node, tokens: list[Token]):
         if token.type == 'NUMBER':
             consume("NUMBER")
             return ASTNode('NumberLiteral', token.value)
+        elif token.type == 'UNARY_MINUS':
+            consume('UNARY_MINUS')
+            factor_unary_node = parse_factor()
+            new_node = ASTNode("MultiplicativeExpression", '*')
+            new_node.left = ASTNode("NumberLiteral", "-1")
+            new_node.right = factor_unary_node
+            return new_node
         elif token.type == 'LPAREN':
             consume('LPAREN')
             factor_node = parse_expression()
             consume('RPAREN')
             return factor_node
         else:
-            raise SyntaxError(f"Unexpected toke {token.type}")
+            raise SyntaxError(f"Unexpected token {token.type}")
 
     def parse_term():
         term_node = parse_factor()
