@@ -15,6 +15,10 @@ def parse(node, tokens: list[Token]):
     current = 0
 
     def peek():
+        # if current < len(tokens):
+        #   return tokens[current]
+        # else:
+        #   return None
         return tokens[current] if current < len(tokens) else None
 
     def consume(expected_type=None):
