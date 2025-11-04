@@ -1,14 +1,13 @@
-import unittest
-def add(a, b):
-    return a + b
-
-class TestMathOps(unittest.TestCase):
-    def test_add(self):
-        self.assertEqual(add(2, 3), 5)
-
-    def test_add2(self):
-        self.assertEqual(add(2, 4), 5)
+# Test cases for BODMAS_Compiler
 
 
-if __name__ == '__main__':
-    unittest.main()
+# eval function defination for easy testing
+
+def eval(expression: str) -> float:
+    from core import evaluator, parser, lexer
+
+    token = lexer.lex(expression)
+    ast = parser.parse(None, token)
+    result = evaluator.evaluate(ast)
+    return result
+
