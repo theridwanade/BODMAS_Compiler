@@ -1,5 +1,10 @@
 # Test cases for BODMAS_Compiler
 
+# - 2*2(3)
+# - 2+2
+# - 4+3*5 + (3 -1 + (4+5))
+# - 2*2*(3)
+
 
 # eval function defination for easy testing
 
