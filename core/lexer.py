@@ -62,6 +62,9 @@ def lex(expression: str):
             prev_token_type = "DIVIDE"
             continue
         if char == '(':
+            if prev_token_type == "NUMBER":
+                # Implicit multiplication
+                tokens.append(Token("MULTIPLY", '*'))
             tokens.append(Token("LPAREN", '('))
             i += 1
             prev_token_type = "LPAREN"
