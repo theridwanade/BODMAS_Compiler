@@ -1,0 +1,10 @@
+[project]
+name = "bodmas_compiler"
+version = "0.1.0"
+description = "A compiler for evaluating BODMAS expressions"
+authors = [
+    { name = "Ridwan Oyeniyi", email = "theridwanade@gmail.com" }
+]
+license = "CC-BY-4.0"
+license-files = ["LICENSE"]
+readme = "README.md"
